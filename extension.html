@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<script> document.execCommand("BackgroundImageCache", false, true); </script>
+<html class="ie6 lt-ie7 lt-ie8 lt-ie9 lte9"><script>window.ie6=1;</script> <![endif]-->
+<!--[if IE 7]>
+<html class="ie7 lt-ie8 lt-ie9 lte9"><script>window.ie7=1;</script> <![endif]-->
+<!--[if IE 8]>
+<html class="ie8 lt-ie9 lte9"><script>window.ie8=1;</script> <![endif]-->
+<!--[if IE 9]>
+<html class="ie9 lte9"><script>window.ie9=1;</script> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class=""> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="stylesheet" href="/res/css/reset.css"/>
+<link rel="stylesheet" href="/res/css/core.css"/>
+<link rel="stylesheet" href="/res/css/pack.css"/>
+
+<style>
+	.lt-ie9 a,
+	.lt-ie9 label, 
+	.lt-ie9 .button,
+	.lt-ie9 .selectbox-button,
+	.lt-ie9 .br_dialog,
+	.lt-ie9 #sideMenu a { font-style: expression((function(el) {el.style.fontStyle = 'normal'; el.hideFocus = true;})(this)); }
+	:focus { outline: none; }
+</style>
+
+<script>
+(function() {
+	var match = /MSIE ([^;]+)/.exec(navigator.userAgent),
+		ratio;
+	
+	match = match && parseFloat(match[1]);
+	
+	if (match && (match === 6 || match === 7 || match === 8)) {
+		return;
+	}
+	
+	if (window.devicePixelRatio) {
+		ratio = window.devicePixelRatio;
+	} else {
+		try {
+			ratio = screen.deviceXDPI / screen.logicalXDPI;
+		} catch(ex) {
+			ratio = 1;
+		}
+	}
+	
+	if (ratio < 1.5) {
+		ratio = 1;
+	} else if (ratio > 1.5) {
+		ratio = 2;
+	}
+	
+	document.documentElement.className += ' global_ratio_' + (ratio + '').replace('.', '_');
+})();
+</script>
+
+<!--[if lt IE 8]>
+<script type="text/javascript" src="/res/js/json2.js"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="/res/js/mod.js"></script>
+<script src="/res/js/request.js"></script>
+<script type="text/template" data-role="colorful-style-tmpl">
+	<style data-role="colorful-style">
+		.theme-colorful .button:hover {
+			color: <%= color %>;
+			border-color: <%= color %>;
+		}
+		
+		.theme-colorful .button:focus,
+		.theme-colorful .button-confirm,
+		.theme-colorful .button-confirm:hover {
+			color: #fff;
+			border-color: <%= color %>;
+			background: <%= color %>;
+		}
+		
+		.theme-colorful .button:active {
+			color: <%= color %>;
+			border-color: <%= color %>;
+			background: rgba(<%= colorToRGB %>, 0.16);
+		}
+		
+		.theme-colorful .checkbox,
+		.theme-colorful .radio {
+			background-color: <%= color %> !important;
+		}
+		
+		.theme-colorful input[type="text"]:focus,
+		.theme-colorful .textbox:focus {
+			border-color: <%= color %>;
+		}
+
+		.theme-colorful input[type="text"]::selection,
+		.theme-colorful .textbox::selection {
+			background: <%= color %>;
+		}
+		
+		.theme-colorful .file-widget .file-button {
+			background-color: <%= color %>;
+		}
+		
+		.theme-colorful .selectbox-button,
+		.theme-colorful .selectbox-button-icon,
+		.theme-colorful .selectbox-button-text {
+			background-color: <%= color %> !important;
+		}
+		
+		.theme-colorful .selectbox-button:hover,
+		.theme-colorful .selectbox-button:hover .selectbox-button-icon,
+		.theme-colorful .selectbox-button:hover .selectbox-button-text,
+		.theme-colorful .selectbox-button:active,
+		.theme-colorful .selectbox-button:active .selectbox-button-icon,
+		.theme-colorful .selectbox-button:active .selectbox-button-text {
+			color: <%= color %>; 
+		}
+		
+		.theme-colorful .selectbox-menu-active a {
+			background: <%= color %>;
+		}
+	</style>
+</script>
+<script type="text/javascript">
+    var ROOT_PATH = (function(segments){
+        var ret = [];
+        var last = null;
+        while(segments.pop()){
+            last = segments[segments.length-1];
+            if(last === 'apps'){
+                ret.push('../');
+                break;
+            }else{
+                ret.push('../')
+            }
+        }
+        if(segments.length){
+            return ret.join('');
+        }
+        return '';
+    }(location.pathname.split(/[\/\\]/)));
+
+    document.ondragstart = function(e){
+
+        e = e||event;
+        var target = e.target || e.srcElement;
+        var preventDefault = false;
+        var detectLinkLevel = 3;
+
+        var isVaildLink = function(target, level){
+            level = level || 0;
+            var result = false;
+            do{
+                if(target == document){
+                    break;
+                }
+                var href = target.getAttribute('href',4);
+                var noDrag = target.getAttribute('data-nodrag');
+                if(target.tagName === 'A' && !/^(?:#$|javascript:)/.test(href) && noDrag != 'true'){
+                    result = true;
+                }
+                target = target.parentNode;
+                level -= 1;
+            }while(level > 0 && target);
+            return result;
+        }
+
+        //判断是不是一个可输入的控件.
+        var isInputControl = function(target){
+            return /^(?:input|textarea)$/i.test(target.tagName);
+        }
+
+        switch(e.type){
+            case 'dragstart':
+                if(target.tagName === 'A'){
+                    preventDefault = isVaildLink(target);
+                }
+                break;
+        }
+
+        return preventDefault;
+    }
+</script>
+	    <title>My Applications</title>
+	    <link rel="stylesheet" href="/res/css/extension.css"/>
+	    <link rel="stylesheet" href="/res/css/box-shadow.css" />
+	<script src="/res/js/map.js"></script>
+</head>
+	<body>
+	    <div id="container">
+	    	<div id="header">
+	    		<div class="header-inner">
+	    			<h1>My Applications</h1>
+		    		<a class="exten-link exten-link-appstore" href="http://chajian.baidu.com" target="_blank">Open the Application Center</a>
+	    			<a class="exten-link exten-link-package" href="">Package Extensions</a>
+	    		</div>
+	    	</div>
+	    	<div id="content">
+	    		<div class="exten-list-wrapper">
+	    			<table class="exten-list">
+	    				<tbody>
+	    				</tbody>
+	    			</table>
+	    			<p class="exten-note">
+	    				You are not currently installing any applications, and now go to the<a class="exten-link" href="http://chajian.baidu.com" target="_blank">application store</a> to find practical, interesting application!
+	    			</p>
+	    		</div>
+	    	</div>
+	    </div>
+	    
+	    <script type="text/javascript">
+		    require.async('extension/main');
+		</script>
+	</body>
+</html>

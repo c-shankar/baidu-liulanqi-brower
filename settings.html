@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<script> document.execCommand("BackgroundImageCache", false, true); </script>
+<html class="ie6 lt-ie7 lt-ie8 lt-ie9 lte9"><script>window.ie6=1;</script> <![endif]-->
+<!--[if IE 7]>
+<html class="ie7 lt-ie8 lt-ie9 lte9"><script>window.ie7=1;</script> <![endif]-->
+<!--[if IE 8]>
+<html class="ie8 lt-ie9 lte9"><script>window.ie8=1;</script> <![endif]-->
+<!--[if IE 9]>
+<html class="ie9 lte9"><script>window.ie9=1;</script> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class=""> <!--<![endif]-->
+<html>
+<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="stylesheet" href="/res/css/reset.css"/>
+<link rel="stylesheet" href="/res/css/core.css"/>
+<link rel="stylesheet" href="/res/css/pack.css"/>
+
+<style>
+	.lt-ie9 a,
+	.lt-ie9 label, 
+	.lt-ie9 .button,
+	.lt-ie9 .selectbox-button,
+	.lt-ie9 .br_dialog,
+	.lt-ie9 #sideMenu a { font-style: expression((function(el) {el.style.fontStyle = 'normal'; el.hideFocus = true;})(this)); }
+	:focus { outline: none; }
+</style>
+
+<script>
+(function() {
+	var match = /MSIE ([^;]+)/.exec(navigator.userAgent),
+		ratio;
+	
+	match = match && parseFloat(match[1]);
+	
+	if (match && (match === 6 || match === 7 || match === 8)) {
+		return;
+	}
+	
+	if (window.devicePixelRatio) {
+		ratio = window.devicePixelRatio;
+	} else {
+		try {
+			ratio = screen.deviceXDPI / screen.logicalXDPI;
+		} catch(ex) {
+			ratio = 1;
+		}
+	}
+	
+	if (ratio < 1.5) {
+		ratio = 1;
+	} else if (ratio > 1.5) {
+		ratio = 2;
+	}
+	
+	document.documentElement.className += ' global_ratio_' + (ratio + '').replace('.', '_');
+})();
+</script>
+
+<!--[if lt IE 8]>
+<script type="text/javascript" src="/res/js/json2.js"></script>
+<!--<![endif]-->
+<script type="text/javascript" src="/res/js/mod.js"></script>
+<script src="/res/js/request.js"></script>
+<script type="text/template" data-role="colorful-style-tmpl">
+	<style data-role="colorful-style">
+		.theme-colorful .button:hover {
+			color: <%= color %>;
+			border-color: <%= color %>;
+		}
+		
+		.theme-colorful .button:focus,
+		.theme-colorful .button-confirm,
+		.theme-colorful .button-confirm:hover {
+			color: #fff;
+			border-color: <%= color %>;
+			background: <%= color %>;
+		}
+		
+		.theme-colorful .button:active {
+			color: <%= color %>;
+			border-color: <%= color %>;
+			background: rgba(<%= colorToRGB %>, 0.16);
+		}
+		
+		.theme-colorful .checkbox,
+		.theme-colorful .radio {
+			background-color: <%= color %> !important;
+		}
+		
+		.theme-colorful input[type="text"]:focus,
+		.theme-colorful .textbox:focus {
+			border-color: <%= color %>;
+		}
+
+		.theme-colorful input[type="text"]::selection,
+		.theme-colorful .textbox::selection {
+			background: <%= color %>;
+		}
+		
+		.theme-colorful .file-widget .file-button {
+			background-color: <%= color %>;
+		}
+		
+		.theme-colorful .selectbox-button,
+		.theme-colorful .selectbox-button-icon,
+		.theme-colorful .selectbox-button-text {
+			background-color: <%= color %> !important;
+		}
+		
+		.theme-colorful .selectbox-button:hover,
+		.theme-colorful .selectbox-button:hover .selectbox-button-icon,
+		.theme-colorful .selectbox-button:hover .selectbox-button-text,
+		.theme-colorful .selectbox-button:active,
+		.theme-colorful .selectbox-button:active .selectbox-button-icon,
+		.theme-colorful .selectbox-button:active .selectbox-button-text {
+			color: <%= color %>; 
+		}
+		
+		.theme-colorful .selectbox-menu-active a {
+			background: <%= color %>;
+		}
+	</style>
+</script>
+<script type="text/javascript">
+    var ROOT_PATH = (function(segments){
+        var ret = [];
+        var last = null;
+        while(segments.pop()){
+            last = segments[segments.length-1];
+            if(last === 'apps'){
+                ret.push('../');
+                break;
+            }else{
+                ret.push('../')
+            }
+        }
+        if(segments.length){
+            return ret.join('');
+        }
+        return '';
+    }(location.pathname.split(/[\/\\]/)));
+
+    document.ondragstart = function(e){
+
+        e = e||event;
+        var target = e.target || e.srcElement;
+        var preventDefault = false;
+        var detectLinkLevel = 3;
+
+        var isVaildLink = function(target, level){
+            level = level || 0;
+            var result = false;
+            do{
+                if(target == document){
+                    break;
+                }
+                var href = target.getAttribute('href',4);
+                var noDrag = target.getAttribute('data-nodrag');
+                if(target.tagName === 'A' && !/^(?:#$|javascript:)/.test(href) && noDrag != 'true'){
+                    result = true;
+                }
+                target = target.parentNode;
+                level -= 1;
+            }while(level > 0 && target);
+            return result;
+        }
+
+        //判断是不是一个可输入的控件.
+        var isInputControl = function(target){
+            return /^(?:input|textarea)$/i.test(target.tagName);
+        }
+
+        switch(e.type){
+            case 'dragstart':
+                if(target.tagName === 'A'){
+                    preventDefault = isVaildLink(target);
+                }
+                break;
+        }
+
+        return preventDefault;
+    }
+</script>
+    <title>设置</title>
+    <link rel="stylesheet" href="/res/css/settings.css"/>
+    <link rel="stylesheet" href="/res/css/ui.css"/>
+    <link rel="stylesheet" href="/res/css/box-shadow.css"/>
+    <script type="text/template" data-role="colorful-style-tmpl">
+	<style data-role="colorful-style">
+		.theme-colorful .side-menu .active a,
+		.theme-colorful .settings .ui-menu .ui-menu-item a.ui-state-focus,
+		.theme-colorful .settings .ui-menu .ui-menu-item a.ui-state-active {
+			background: <%= color %>;
+		}
+	</style>
+</script>
+<script src="/res/js/map.js"></script>
+</head>
+<body class="settings">
+
+<div id="wrapper">
+    <div id="header">
+        <div class="title">
+            <i class="mod_logo"></i>Settings
+        </div>
+    </div>
+    <div id="sidebar">
+        <div class="inner">
+
+            <ul class="side-menu" id="sideMenu">
+                <li class="item-1 active">
+                    <a href="#general">General</a>
+                </li>
+                <li class="item-2">
+                    <a href="#privacy">Privacy</a>
+                </li>
+                <li class="item-3">
+                    <a href="#advanced">Advanced</a>
+                </li>
+                <li class="item-4">
+                    <a href="#safe">Security</a>
+                </li>
+                <li class="item-5">
+                    <a href="#extension">Extensions</a>
+                </li>
+            </ul>
+            <a href="javascript:;" style="display: none" id="btnResetProfile" class="lnk-reset">恢复所有默认设置</a>
+        </div>
+    </div>
+    <div id="main" style="height:500px">
+        <div class="main-inner">
+
+
+            <div class="card" data-id="general">
+                <div class="setting-section " id="userInfoSetting">
+                    <h2>Account Synchronization</h2>
+
+                    <div class="setting-content">
+                        <div class="statu-guest" id="userInfoGuest">
+                            <label class="control-item">Use your Baidu account login Baidu browser, you can synchronize your favorites</label>
+
+                            <div class="action control-item mt16">
+                                <a href="#" id="btnLogin" class="button" style="86px;">Login</a>
+                            </div>
+                        </div>
+                        <div class="statu-login hide" id="userInfoLogin">
+                            <div class="user-id">You have <label id="userLabel">...</label> logged</div>
+                            <div id="lastSyncInfo" class="sync-info junior-info hide">Favourites are  <label
+                                    id="lastSyncTime"></label> synced
+                            </div>
+                            <div class="action">
+                                <a href="#" class="button" id="btnLogout">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-section">
+                    <h2>Default Browser</h2>
+
+                    <div class="setting-content">
+                        <div class="is-default hide" id="browserIsDefault">
+                            Baidu browser is already the default browser
+                        </div>
+                        <div class="is-default hide" id="browserNoDefault">
+                            Baidu browser is not the default browser
+                        </div>
+                        <div class="not-default" id="browserIsNotDefault">
+                            <div id="defaultBrowserStatu" class="control-item mt17">
+                                <a href="#" id="btnSetBrowserDefault"
+                                   class="button">Set as the default browser</a>
+                            </div>
+                        </div>
+                        <div class="mt15" id="setDefaultBrowser">
+                            <label class="checkbox-wrap" for="chkSetDefaultBrowser">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkSetDefaultBrowser"/>
+                                </i>Lock as default browser
+                            </label>
+                        </div>
+                        <div class="mt15" id="defaultCheckBrowser">
+                            <label class="checkbox-wrap" for="chkDefaultBrowserCheck">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkDefaultBrowserCheck"/>
+                                </i>Check the default browser at startup
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-section" id="startupOpen">
+                    <h2>Open when started</h2>
+
+                    <div class="setting-content">
+                        <ul>
+                            <li class="item-1">
+                                <label class="radio-wrap" for="startupWithNewTab">
+                                    <i class="radio"><input checked type="radio" value="0" name="startup_open"
+                                                            id="startupWithNewTab"/>
+                                    </i>New Tab
+                                </label>
+                            </li>
+                            <li class="item-2">
+                                <label class="radio-wrap" for="startupWithLastUnclosedTab">
+                                    <i class="radio">
+                                        <input type="radio" value="1" name="startup_open"
+                                               id="startupWithLastUnclosedTab"/>
+                                    </i>The page that was not closed at the time of the last exit
+                                </label>
+                            </li>
+                            <li class="item-3">
+                                <label class="radio-wrap" for="startupWithUserCustom">
+                                    <i class="radio">
+                                        <input type="radio" value="2" name="startup_open" id="startupWithUserCustom"/>
+                                    </i>Custom Site
+                                </label><input class="textbox ml5" type="text" id="userCustomStartupOpenSite">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="settings-newTabOpenType" class="setting-section">
+                    <h2>Open when creating a new tab</h2>
+
+                    <div class="setting-content">
+                        <ul>
+                            <li class="mb5">
+                                <label class="radio-wrap" for="newTabOpenTab">
+                                    <i class="radio"><input checked type="radio" value="0" name="newTabOpenType"
+                                                            id="newTabOpenTab"/>
+                                    </i>
+                                    New Tab
+                                </label>
+                            </li>
+                            <li>
+                                <label class="radio-wrap" for="newTabWithUserCustom">
+                                    <i class="radio">
+                                        <input type="radio" value="2" name="newTabOpenType"
+                                               id="newTabWithUserCustom"/>
+                                    </i>URL
+                                </label><input class="textbox ml5" type="text" id="userCustomNewtab">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="settings-closeTabPattern" class="setting-section">
+                    <h2>Close the tab and switch to</h2>
+
+                    <div class="setting-content">
+                        <ul>
+                            <li class="mb5">
+                                <label class="radio-wrap" for="closeTabPatternSmart">
+                                    <i class="radio"><input checked type="radio" value="0" name="closeTabPattern"
+                                                            id="closeTabPatternSmart"/>
+                                    </i>Intelligent choice
+                                </label>
+                            </li>
+                            <li class="mb5">
+                                <label class="radio-wrap" for="closeTabPatternLeft">
+                                    <i class="radio">
+                                        <input type="radio" value="1" name="closeTabPattern"
+                                               id="closeTabPatternLeft"/>
+                                    </i>Left Tab
+                                </label>
+                            </li>
+                            <li>
+                                <label class="radio-wrap" for="closeTabPatternRIght">
+                                    <i class="radio">
+                                        <input type="radio" value="2" name="closeTabPattern"
+                                               id="closeTabPatternRIght"/>
+                                    </i>Right Tab
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="settings-opentab" class="setting-section">
+                    <h2>Click on link</h2>
+
+                    <div class="setting-content">
+                        <ul>
+                            <li class="mb5">
+                                <label class="radio-wrap" for="rad-tabopenactive">
+                                    <i class="radio"><input checked type="radio" value="0" name="opentabtype"
+                                                            id="rad-tabopenactive"/>
+                                    </i>Activated immediately after opening new label (front desk open)
+                                </label>
+                            </li>
+                            <li>
+                                <label class="radio-wrap" for="rad-tabopenunactive">
+                                    <i class="radio">
+                                        <input type="radio" value="1" name="opentabtype"
+                                               id="rad-tabopenunactive"/>
+                                    </i>New label is open but not active (background open)
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="settings-addressbar" class="setting-section">
+                    <h2>Address bar when entering content</h2>
+
+                    <div class="setting-content">
+                        <ul>
+                            <li class="mb5">
+                                <label class="radio-wrap" for="settings-addressbar-type-1">
+                                    <i class="radio">
+                                        <input type="radio" id="settings-addressbar-type-1" name="addressbarType"
+                                               checked="checked" value="0"/>
+                                    </i>Cover the current tab page to open
+                                </label>
+                            </li>
+                            <li>
+                                <label class="radio-wrap" for="settings-addressbar-type-2">
+                                    <i class="radio">
+                                        <input type="radio" id="settings-addressbar-type-2" name="addressbarType"
+                                               value="1"/>
+                                    </i>Open on new tab and activate now
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="setting-section">
+                    <h2>label</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chk-tabsattop">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chk-tabsattop"/>
+                                </i>Tag at the top of the browser
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chk-quitchecktabs">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chk-quitchecktabs"/>
+                                </i>If there are multiple tags, close the browser, the pop-up prompt
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chkCloseTabWithRightButton">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkCloseTabWithRightButton"/>
+                                </i>Right click on the tab to close the page (shift + right click on the tab to open the right-click menu)
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chk-mousewheelclosetab">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chk-mousewheelclosetab"/>
+                                </i>Click the mouse wheel on the label to close the tab
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chk-doubleclickclosetab">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chk-doubleclickclosetab"/>
+                                </i>Double-click to close the corresponding label
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chk-mousewheelswitchtab">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chk-mousewheelswitchtab"/>
+                                </i>Rolling the mouse wheel on the tab bar toggle the label
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chk-lazytab">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chk-lazytab"/>
+                                </i>Close the lazy tag function
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-section" id="searchEngine">
+                    <h2>Exterior</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chkToggleBookmarkBar">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkToggleBookmarkBar"/>
+                                </i>Show favorites
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chk-show-searchbox">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chk-show-searchbox"/>
+                                </i>Show search box
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chkBottomStatusBar">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkBottomStatusBar"/>
+                                </i>Show status bar
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chk-show-discovery">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chk-show-discovery"/>
+                                </i>The "Find" button is displayed
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chkToggleHomeButton">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkToggleHomeButton"/>
+                                </i>The "Home" button is displayed
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chkToggleMuteButton">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkToggleMuteButton"/>
+                                </i>The "Mute" button is displayed
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chkToggleScreenshotButton">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkToggleScreenshotButton"/>
+                                </i>The "screenshot" button is displayed
+                            </label>
+                        </div>
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chkShowAccelerationButton">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkShowAccelerationButton"/>
+                                </i>The "Accelerated" icon is displayed
+                            </label>
+                        </div>
+                        <div class="control-item mb10" style="display: none;">
+                            <label class="checkbox-wrap" for="chkDynamicScene">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkDynamicScene"/>
+                                </i> 启用“变色龙”效果
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-section" id="searchEngine">
+                    <h2>Search Engine</h2>
+
+                    <div class="setting-content">
+                        <label>
+                            <span class="selectbox-label">Select the default search engine</span>
+                            <select name="" id="sltSearchEngine">
+                            </select>
+                        </label>
+
+                        <div class="mt15">
+                            <label class="checkbox-wrap" for="chkInstantSearchCheck">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkInstantSearchCheck"/>
+                                </i>Turn on Instant Search
+                            </label>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="setting-section" id="downloadSetting">
+                    <h2>Download Settings</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item mb15 " style="display: none">
+                            <label>选择默认下载工具
+                                <select name="" id="sltDownloadTools">
+                                </select>
+                            </label>
+                        </div>
+                        <div class="control-item mb15">
+                            <label class="checkbox-wrap" for="chkDownloadPrompt">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkDownloadPrompt"/>
+                                </i>Automatically download to the default save location
+                                               <span>
+                                               (no longer pop-up reminder)
+                                               </span>
+                            </label>
+                        </div>
+                        <div class="control-item pl20" id="defaultSavePlace" style="display: none;">
+                            <div class="control-wrap">
+                                <span class="control-label">默认保存位置</span>
+
+                                <div class="control-content">
+                                    <div class="file-widget">
+                                        <div class="file-input-wrapper">
+                                            <span id="txtDownloadSavePath" class="textbox file-input"></span>
+                                        </div>
+                                        <a href="#" id="btnSelectDownloadPath" class="file-button"></a>
+                                    </div>
+                                    <span id="freeSpaceTip" class="control-feedback folder-browser-tip"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card hide" data-id="privacy">
+                <div class="setting-section ">
+                    <h2>Browsing data</h2>
+
+                    <div class="setting-content">
+                        <a href="#" id="btnCleanHistory" class="button" style="width: 80px;">Clear the browsing data</a>
+                    </div>
+                </div>
+                <div class="setting-section">
+                    <h2>Password management</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item">
+                            <label class="checkbox-wrap" for="chkPasswordManagerEnable">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkPasswordManagerEnable"/>
+                                </i>Prompt me to save the account password for the page
+                            </label><a href="#" id="lnkPasswordManager" class="ml18">Manage saved passwords</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-section">
+                    <h2>用户体验改善计划</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item">
+                            <label class="checkbox-wrap" for="chkJoinX">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkJoinX"/>
+                                </i>加入</label><a href="http://liulanqi.baidu.com/ueo.html" target="_blank">用户体验改善计划</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card hide" data-id="advanced">
+
+                <div class="setting-section">
+                    <h2>网页设置</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chk-toast">
+                                <i class="checkbox"><input type="checkbox" name="" id="chk-toast"/></i>缩放所有网页到
+                            </label>
+                            <select id="sel-toast-percent">
+                                <option value="25">25</option>
+                                <option value="33">33</option>
+                                <option value="50">50</option>
+                                <option value="67">67</option>
+                                <option value="75">75</option>
+                                <option value="90">90</option>
+                                <option value="95">95</option>
+                                <option value="100" selected="selected">100</option>
+                                <option value="110">110</option>
+                                <option value="125">125</option>
+                                <option value="150">150</option>
+                                <option value="175">175</option>
+                                <option value="200">200</option>
+                                <option value="250">250</option>
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                            </select>
+                        </div>
+                        <div class="control-item">
+                            <label class="checkbox-wrap" for="chkShowVideoWnd">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkShowVideoWnd"/>
+                                </i>显示视频独立播放提示
+                            </label>
+                        </div>
+                        <div class="control-item mt10" id="extHuaci" style="display: none;">
+                            <label class="checkbox-wrap" for="chkHuaci">
+                                <i class="checkbox"><input type="checkbox" name="" id="chkHuaci"/></i>显示划词工具条
+                            </label>
+                        </div>
+                        <div class="control-item mt10">
+                            <label class="checkbox-wrap" for="chkPageScroll">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkPageScroll"/>
+                                </i>启用页面平滑滚动效果
+                            </label>
+                        </div>
+                        <div class="control-item mt10">
+                            <label class="checkbox-wrap" for="chk-directwrite">
+                                <i class="checkbox"><input type="checkbox" name="" id="chk-directwrite"/></i>启用DirectWrite字体渲染系统（可能与同类效果冲突）
+                            </label>
+                        </div>
+                        <div id="setting-enableautopage" class="control-item mt10">
+                            <label class="checkbox-wrap" for="chkEnableAutoPage">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkEnableAutoPage"/>
+                                </i>在百度页面中使用传统翻页
+                            </label>
+                        </div>
+                        <div class="control-item mt10">
+                            <label class="checkbox-wrap" for="chk-useedge">
+                                <i class="checkbox"><input type="checkbox" name="" id="chk-useedge"/></i>IE模式下使用Edge内核渲染网页（仅在Windows
+                                10下有效）
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <h2>老板键</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item mb10">
+                            <label class="checkbox-wrap" for="chk-enable-bossshortcut">
+                                <i class="checkbox"><input type="checkbox" name="" id="chk-enable-bossshortcut"/></i>启用老板键
+                            </label>
+                            <select id="sel-bossshortcut">
+                                <option value="0">Alt+~</option>
+                                <option value="1">Ctrl+Q</option>
+                                <option value="2">Ctrl+~</option>
+                                <option value="3">Ctrl+Shift+A</option>
+                                <option value="4">Ctrl+Shift+Z</option>
+                            </select>
+                        </div>
+                        <div class="control-item">
+                            <label class="checkbox-wrap" for="chk-hide-with-mbutton">
+                                <i class="checkbox"><input type="checkbox" name="" id="chk-hide-with-mbutton"/></i>用鼠标中键隐藏浏览器窗口，用老板键恢复
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <h2>截图快捷键</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item mb10">
+                            截图快捷键
+                            <select id="sel-superShotshortcut">
+                                <option value="0">Ctrl+Shift+D</option>
+                                <option value="1">Ctrl+Shift+X</option>
+                                <option value="2">Ctrl+Alt+P</option>
+                                <option value="3">F7</option>
+                                <option value="4">F8</option>
+                                <option value="5">F9</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-section ">
+                    <h2>广告过滤</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item">
+                            <div id="adBlockPanel"></div>
+                            <a href="#" id="btnWhiteListManager" class="button mt5" style="width: 104px;">管理不过滤的网站</a>
+                        </div>
+                        <div class="control-item mb15 " style="display: none">
+                            <label class="checkbox-wrap">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkAdBlockKillPop"/>拦截弹窗广告
+                                </i>
+                            </label>
+                        </div>
+                        <div class="control-item " style="display: none">
+                            <label class="checkbox-wrap">
+                                <i class="checkbox">
+                                    <input type="checkbox" name="" id="chkAdBlockKillAll"/>
+                                </i>
+                                强力拦截
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <h2>鼠标手势</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item mb18">
+                            <label class="checkbox-wrap" for="chkMouseGesture">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkMouseGesture">
+                                </i>
+                                启用鼠标手势（按住鼠标右键并滑动即可使用鼠标手势）
+                            </label>
+                        </div>
+                        <div class="control-item mb18">
+                            <label class="checkbox-wrap" for="chkMouseGestureTrack">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkMouseGestureTrack">
+                                </i>
+                                显示鼠标手势轨迹
+                            </label>
+                        </div>
+                        <div class="control-item mb18">
+                            <label class="checkbox-wrap" for="chkMouseGestureAction">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkMouseGestureAction">
+                                </i>
+                                显示鼠标手势动作名称
+                            </label>
+                        </div>
+                        <div id="mouseGestureColorContainer" class="control-item mb18" style="cursor:pointer">
+                            <div id="mouseGestureColor"></div>
+                            手势颜色
+                        </div>
+                        <div class="contrl-item mb18">
+                            <table class="grid selectbox-button-no-wrap">
+                                <tr>
+                                    <th width="152">鼠标手势</th>
+                                    <th> 动作</th>
+                                </tr>
+                                <tr>
+                                    <td class="item-1">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td>
+                                        <select id="selMg1" style="width:265px;" data-default="0">
+                                            <option value="0" selected>后退</option>
+                                            <option value="1">前进</option>
+                                            <option value="2">向上滚动页面</option>
+                                            <option value="3">向下滚动页面</option>
+                                            <option value="4">前一个标签页</option>
+                                            <option value="5">后一个标签页</option>
+                                            <option value="6">关闭所有标签页</option>
+                                            <option value="7">关闭当前标签页</option>
+                                            <option value="8">新建标签页</option>
+                                            <option value="9">撤销关闭标签</option>
+                                            <!--<option value="10">刷新</option>-->
+                                            <option value="10">刷新</option>
+                                            <option value="11">转到页首</option>
+                                            <option value="12">转到页尾</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="item-2">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td>
+                                        <select id="selMg2" style="width:265px;" data-default="1">
+                                            <option value="0">后退</option>
+                                            <option value="1" selected>前进</option>
+                                            <option value="2">向上滚动页面</option>
+                                            <option value="3">向下滚动页面</option>
+                                            <option value="4">前一个标签页</option>
+                                            <option value="5">后一个标签页</option>
+                                            <option value="6">关闭所有标签页</option>
+                                            <option value="7">关闭当前标签页</option>
+                                            <option value="8">新建标签页</option>
+                                            <option value="9">撤销关闭标签</option>
+                                            <!--<option value="10">刷新</option>-->
+                                            <option value="10">刷新</option>
+                                            <option value="11">转到页首</option>
+                                            <option value="12">转到页尾</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="item-3">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td>
+                                        <select id="selMg3" style="width:265px;" data-default="2">
+                                            <option value="0">后退</option>
+                                            <option value="1">前进</option>
+                                            <option value="2" selected>向上滚动页面</option>
+                                            <option value="3">向下滚动页面</option>
+                                            <option value="4">前一个标签页</option>
+                                            <option value="5">后一个标签页</option>
+                                            <option value="6">关闭所有标签页</option>
+                                            <option value="7">关闭当前标签页</option>
+                                            <option value="8">新建标签页</option>
+                                            <option value="9">撤销关闭标签</option>
+                                            <!--<option value="10">刷新</option>-->
+                                            <option value="10">刷新</option>
+                                            <option value="11">转到页首</option>
+                                            <option value="12">转到页尾</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="item-4">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td>
+                                        <select id="selMg4" style="width:265px;" data-default="3">
+                                            <option value="0">后退</option>
+                                            <option value="1">前进</option>
+                                            <option value="2">向上滚动页面</option>
+                                            <option value="3" selected>向下滚动页面</option>
+                                            <option value="4">前一个标签页</option>
+                                            <option value="5">后一个标签页</option>
+                                            <option value="6">关闭所有标签页</option>
+                                            <option value="7">关闭当前标签页</option>
+                                            <option value="8">新建标签页</option>
+                                            <option value="9">撤销关闭标签</option>
+                                            <!--<option value="10">刷新</option>-->
+                                            <option value="10">刷新</option>
+                                            <option value="11">转到页首</option>
+                                            <option value="12">转到页尾</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="item-5">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td><select id="selMg5" style="width:265px;" data-default="4">
+                                        <option value="0">后退</option>
+                                        <option value="1">前进</option>
+                                        <option value="2">向上滚动页面</option>
+                                        <option value="3">向下滚动页面</option>
+                                        <option value="4" selected>前一个标签页</option>
+                                        <option value="5">后一个标签页</option>
+                                        <option value="6">关闭所有标签页</option>
+                                        <option value="7">关闭当前标签页</option>
+                                        <option value="8">新建标签页</option>
+                                        <option value="9">撤销关闭标签</option>
+                                        <option value="10">刷新</option>
+                                        <option value="11">转到页首</option>
+                                        <option value="12">转到页尾</option>
+                                    </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="item-6">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td>
+                                        <select id="selMg6" style="width:265px;" data-default="5">
+                                            <option value="0">后退</option>
+                                            <option value="1">前进</option>
+                                            <option value="2">向上滚动页面</option>
+                                            <option value="3">向下滚动页面</option>
+                                            <option value="4">前一个标签页</option>
+                                            <option value="5" selected>后一个标签页</option>
+                                            <option value="6">关闭所有标签页</option>
+                                            <option value="7">关闭当前标签页</option>
+                                            <option value="8">新建标签页</option>
+                                            <option value="9">撤销关闭标签</option>
+                                            <!--<option value="10">刷新</option>-->
+                                            <option value="10">刷新</option>
+                                            <option value="11">转到页首</option>
+                                            <option value="12">转到页尾</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="item-7">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td>
+                                        <select id="selMg7" style="width:265px;" data-default="6">
+                                            <option value="0">后退</option>
+                                            <option value="1">前进</option>
+                                            <option value="2">向上滚动页面</option>
+                                            <option value="3">向下滚动页面</option>
+                                            <option value="4">前一个标签页</option>
+                                            <option value="5">后一个标签页</option>
+                                            <option value="6" selected>关闭所有标签页</option>
+                                            <option value="7">关闭当前标签页</option>
+                                            <option value="8">新建标签页</option>
+                                            <option value="9">撤销关闭标签</option>
+                                            <!--<option value="10">刷新</option>-->
+                                            <option value="10">刷新</option>
+                                            <option value="11">转到页首</option>
+                                            <option value="12">转到页尾</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="item-8">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td>
+                                        <select id="selMg8" style="width:265px;" data-default="7">
+                                            <option value="0">后退</option>
+                                            <option value="1">前进</option>
+                                            <option value="2">向上滚动页面</option>
+                                            <option value="3">向下滚动页面</option>
+                                            <option value="4">前一个标签页</option>
+                                            <option value="5">后一个标签页</option>
+                                            <option value="6">关闭所有标签页</option>
+                                            <option value="7" selected>关闭当前标签页</option>
+                                            <option value="8">新建标签页</option>
+                                            <option value="9">撤销关闭标签</option>
+                                            <!--<option value="10">刷新</option>-->
+                                            <option value="10">刷新</option>
+                                            <option value="11">转到页首</option>
+                                            <option value="12">转到页尾</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="item-9">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td>
+                                        <select id="selMg9" style="width:265px;" data-default="8">
+                                            <option value="0">后退</option>
+                                            <option value="1">前进</option>
+                                            <option value="2">向上滚动页面</option>
+                                            <option value="3">向下滚动页面</option>
+                                            <option value="4">前一个标签页</option>
+                                            <option value="5">后一个标签页</option>
+                                            <option value="6">关闭所有标签页</option>
+                                            <option value="7">关闭当前标签页</option>
+                                            <option value="8" selected>新建标签页</option>
+                                            <option value="9">撤销关闭标签</option>
+                                            <!--<option value="10">刷新</option>-->
+                                            <option value="10">刷新</option>
+                                            <option value="11">转到页首</option>
+                                            <option value="12">转到页尾</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="item-10">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td><select id="selMg10" style="width:265px;" data-default="9">
+                                        <option value="0">后退</option>
+                                        <option value="1">前进</option>
+                                        <option value="2">向上滚动页面</option>
+                                        <option value="3">向下滚动页面</option>
+                                        <option value="4">前一个标签页</option>
+                                        <option value="5">后一个标签页</option>
+                                        <option value="6">关闭所有标签页</option>
+                                        <option value="7">关闭当前标签页</option>
+                                        <option value="8">新建标签页</option>
+                                        <option value="9" selected>撤销关闭标签</option>
+                                        <!--<option value="10">刷新</option>-->
+                                        <option value="10">刷新</option>
+                                        <option value="11">转到页首</option>
+                                        <option value="12">转到页尾</option>
+                                    </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="item-11">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td><select id="selMg11" style="width:265px;" data-default="10">
+                                        <option value="0">后退</option>
+                                        <option value="1">前进</option>
+                                        <option value="2">向上滚动页面</option>
+                                        <option value="3">向下滚动页面</option>
+                                        <option value="4">前一个标签页</option>
+                                        <option value="5">后一个标签页</option>
+                                        <option value="6">关闭所有标签页</option>
+                                        <option value="7">关闭当前标签页</option>
+                                        <option value="8">新建标签页</option>
+                                        <option value="9">撤销关闭标签</option>
+                                        <!--<option value="10">刷新</option>-->
+                                        <option value="10" selected>刷新</option>
+                                        <option value="11">转到页首</option>
+                                        <option value="12">转到页尾</option>
+                                    </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="item-12">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td><select id="selMg12" style="width:265px;" data-default="10">
+                                        <option value="0">后退</option>
+                                        <option value="1">前进</option>
+                                        <option value="2">向上滚动页面</option>
+                                        <option value="3">向下滚动页面</option>
+                                        <option value="4">前一个标签页</option>
+                                        <option value="5">后一个标签页</option>
+                                        <option value="6">关闭所有标签页</option>
+                                        <option value="7">关闭当前标签页</option>
+                                        <option value="8">新建标签页</option>
+                                        <option value="9">撤销关闭标签</option>
+                                        <!--<option value="10">刷新</option>-->
+                                        <option value="10" selected>刷新</option>
+                                        <option value="11">转到页首</option>
+                                        <option value="12">转到页尾</option>
+                                    </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="item-13">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td><select id="selMg13" style="width:265px;" data-default="11">
+                                        <option value="0">后退</option>
+                                        <option value="1">前进</option>
+                                        <option value="2">向上滚动页面</option>
+                                        <option value="3">向下滚动页面</option>
+                                        <option value="4">前一个标签页</option>
+                                        <option value="5">后一个标签页</option>
+                                        <option value="6">关闭所有标签页</option>
+                                        <option value="7">关闭当前标签页</option>
+                                        <option value="8">新建标签页</option>
+                                        <option value="9">撤销关闭标签</option>
+                                        <!--<option value="10">刷新</option>-->
+                                        <option value="10">刷新</option>
+                                        <option value="11" selected>转到页首</option>
+                                        <option value="12">转到页尾</option>
+                                    </select></td>
+                                </tr>
+                                <tr>
+                                    <td class="item-14">
+                                        <div class="item-block"></div>
+                                    </td>
+                                    <td><select id="selMg14" style="width:265px;" data-default="12">
+                                        <option value="0">后退</option>
+                                        <option value="1">前进</option>
+                                        <option value="2">向上滚动页面</option>
+                                        <option value="3">向下滚动页面</option>
+                                        <option value="4">前一个标签页</option>
+                                        <option value="5">后一个标签页</option>
+                                        <option value="6">关闭所有标签页</option>
+                                        <option value="7">关闭当前标签页</option>
+                                        <option value="8">新建标签页</option>
+                                        <option value="9">撤销关闭标签</option>
+                                        <!--<option value="10">刷新</option>-->
+                                        <option value="10">刷新</option>
+                                        <option value="11">转到页首</option>
+                                        <option value="12" selected>转到页尾</option>
+                                    </select></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="control-item">
+                            <a href="#" class="button" id="btnResetMouseGesture" style="width: 92px;">恢复默认鼠标手势</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-section" id="tempSetting">
+                    <h2>缓存设置</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item" id="tempSettingPlace">
+                            <div class="control-wrap">
+                                <span class="control-label">当前缓存目录</span>
+
+                                <div class="control-content">
+                                    <div class="file-widget file-widget-inline">
+                                        <div class="file-input-wrapper">
+                                            <span id="txtCachePath" class="textbox file-input"></span>
+                                        </div>
+                                        <a href="#" id="btnSelectCachePath" class="file-button"></a>
+                                    </div>
+                                    <a href="#" class="ml10" id="btnRestoreCacheDir">恢复默认目录</a>
+                                </div>
+                            </div>
+                            <!--<div class="mt10 junior-info" >更改缓存目录，将在重启浏览器后生效<span>(老数据将迁移到新目录)</span></div>-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-section">
+                    <h2>代理服务器</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item">
+                            <a href="#" class="button" id="btnSetProxy" style="width: 92px;">设置代理服务器</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="setting-section" id="messageCenterBox" style="display: none">
+                    <h2>消息中心</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item mb18">
+                            <label class="checkbox-wrap" for="chkMessageCenter">
+                                <i class="checkbox">
+                                    <input type="checkbox" id="chkMessageCenter">
+                                </i>
+                                开启百度热点新闻
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="card hide" data-id="safe">
+                <div class="setting-section">
+                    <h2>安全证书</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item">
+                            <label class="checkbox-wrap" for="chkSslCheck">
+                                <i class="checkbox"><input type="checkbox" id="chkSslCheck"/></i>检查网页的安全证书是否有效
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-section">
+                    <h2>防追踪</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item">
+                            <label class="checkbox-wrap" for="chkPrivacyDNT">
+                                <i class="checkbox"><input type="checkbox" id="chkPrivacyDNT"/></i>开启
+                            </label><a href="http://bbs.liulanqi.baidu.com/forum.php?mod=viewthread&tid=3483"
+                                       target="_blank">防追踪功能</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-section">
+                    <h2>安全铭牌</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item">
+                            <label class="checkbox-wrap" for="chk-show-nameboard">
+                                <i class="checkbox checkbox-checked-disable"><input type="checkbox"
+                                                                                    id="chk-show-nameboard"
+                                                                                    disabled="disabled"/></i>在地址栏显示安全铭牌，识别网站资质
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="setting-section">
+                    <h2>风险中间页</h2>
+
+                    <div class="setting-content">
+                        <div class="control-item">
+                            <label class="checkbox-wrap" for="chk-show-risk-tips">
+                                <i class="checkbox checkbox-checked-disable"><input type="checkbox"
+                                                                                    id="chk-show-risk-tips"
+                                                                                    disabled="disabled"/></i>访问风险页面时弹出提示
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card hide" data-id="extension">
+                <iframe id="extensionIframe" class="iframeContent" src="bdbrowser://extension" frameborder="0"></iframe>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div id="resetProfile" class="hide reset-profile">
+    Are you sure you want to restore all settings to their default state?
+</div>
+
+<script type="text/javascript">
+    require.async('settings/main');
+</script>
+</body>
+</html>
